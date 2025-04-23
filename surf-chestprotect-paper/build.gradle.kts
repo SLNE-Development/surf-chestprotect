@@ -1,21 +1,10 @@
 plugins {
-    kotlin("jvm") version "2.1.10"
+    id("dev.slne.surf.surfapi.gradle.paper-plugin")
 }
+surfPaperPluginApi {
+    mainClass("dev.slne.surf.chestprotect.SurfChestProtectPaper")
+    generateLibraryLoader(false)
+    authors.add("Jo_field")
+    authors.add("TheBjoRedCraft")
 
-group = "dev.slne"
-version = "unspecified"
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testImplementation(kotlin("test"))
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
-kotlin {
-    jvmToolchain(21)
 }
