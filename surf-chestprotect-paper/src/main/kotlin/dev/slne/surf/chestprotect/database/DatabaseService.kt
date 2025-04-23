@@ -6,7 +6,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.UUID
 
 object DatabaseService {
-
     object ProtectionUsers : Table() {
         val id = varchar("id", 36).transform({ UUID.fromString(it) }, { it.toString() })
         val protections = text("protections")
