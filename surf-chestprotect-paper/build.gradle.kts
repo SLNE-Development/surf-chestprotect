@@ -6,7 +6,7 @@ surfPaperPluginApi {
     mainClass("dev.slne.surf.chestprotect.SurfChestProtectPaper")
     generateLibraryLoader(false)
     authors.add("Jo_field")
-    authors.add("TheBjoRedCraft")
+    authors.add("red")
 }
 
 dependencies {
