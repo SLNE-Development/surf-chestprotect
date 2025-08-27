@@ -1,18 +1,25 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinBasePlugin
+
 buildscript {
     repositories {
         gradlePluginPortal()
         maven("https://repo.slne.dev/repository/maven-public/") { name = "maven-public" }
     }
     dependencies {
-        classpath("dev.slne.surf:surf-api-gradle-plugin:1.21.4+")
+        classpath("dev.slne.surf:surf-api-gradle-plugin:1.21.7+")
     }
 }
+
 allprojects {
     group = "dev.slne.surf.chestprotect"
-    version = "1.21.4-1.0.0-SNAPSHOT"
+    version = findProperty("version") as String
 
-    repositories {
-        mavenCentral()
-        maven("https://repo.slne.dev/repository/maven-public/") { name = "maven-public" }
+    afterEvaluate {
+        plugins.withType<KotlinBasePlugin> {
+            configure<KotlinJvmExtension> {
+                jvmToolchain(24)
+            }
+        }
     }
 }

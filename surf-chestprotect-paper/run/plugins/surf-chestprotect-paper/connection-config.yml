@@ -1,0 +1,26 @@
+database:
+    storage-method: local
+    local:
+        file-name: storage.db
+    hikari:
+        minimum-idle: 10
+        maximum-pool-size: 10
+        idle-timeout: 60000
+        connection-timeout: 30000
+        max-lifetime: 1800000
+    external:
+        connector: mariadb
+        driver: org.mariadb.jdbc.Driver
+        hostname: localhost
+        port: 3306
+        username: root
+        password: ''
+        database: database
+redis:
+    host: localhost
+    port: 6379
+    password: ''
+    database: 0
+    connect-timeout-millis: 5000
+    read-timeout-seconds: 5
+    so-keep-alive: true

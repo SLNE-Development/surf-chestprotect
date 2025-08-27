@@ -1,18 +1,26 @@
 package dev.slne.surf.chestprotect
 
 import com.github.shynixn.mccoroutine.folia.SuspendingJavaPlugin
-import dev.slne.surf.chestprotect.command.ChestProtectCommand
+import dev.slne.surf.chestprotect.command.chestProtectCommand
 import dev.slne.surf.chestprotect.database.DatabaseService
-import dev.slne.surf.database.DatabaseProvider
+import dev.slne.surf.chestprotect.listener.ChestprotectListenerManager
 import org.bukkit.plugin.java.JavaPlugin
 
-class SurfChestProtectPaper(): SuspendingJavaPlugin() {
-    val plugin = JavaPlugin.getPlugin(SurfChestProtectPaper::class.java)
+val plugin get() = JavaPlugin.getPlugin(SurfChestProtectPaper::class.java)
+
+class SurfChestProtectPaper : SuspendingJavaPlugin() {
+
+    override suspend fun onLoadAsync() {
+        DatabaseService.connect()
+    }
 
     override suspend fun onEnableAsync() {
-        DatabaseProvider(plugin.dataFolder.toPath(), plugin.dataFolder.toPath())
-        DatabaseService.createConnection()
+        ChestprotectListenerManager.registerListener()
 
-        ChestProtectCommand("surfchestprotect").register()
+        chestProtectCommand()
+    }
+
+    override suspend fun onDisableAsync() {
+        DatabaseService.disconnect()
     }
 }

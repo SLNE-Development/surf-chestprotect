@@ -1,31 +1,37 @@
 package dev.slne.surf.chestprotect.database
 
+import dev.slne.surf.chestprotect.database.groups.exposed.GroupsTable
+import dev.slne.surf.chestprotect.database.groups.exposed.members.GroupMembersTable
+import dev.slne.surf.chestprotect.database.protections.exposed.ProtectionsTable
+import dev.slne.surf.chestprotect.database.protections.exposed.groups.ProtectionGroupsTable
+import dev.slne.surf.chestprotect.database.protections.exposed.members.ProtectionMembersTable
+import dev.slne.surf.chestprotect.database.users.exposed.ProtectionUsersTable
+import dev.slne.surf.chestprotect.plugin
+import dev.slne.surf.database.DatabaseManager
 import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.UUID
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import kotlin.io.path.div
 
 object DatabaseService {
-    object ProtectionUsers : Table() {
-        val id = varchar("id", 36).transform({ UUID.fromString(it) }, { it.toString() })
-        val protections = text("protections")
-        val notifications = bool("notifications").default(true)
-        val autoProtections = bool("autoProtections").default(true)
-        val autoMembers = bool("autoMembers").default(false)
 
-        override val primaryKey = PrimaryKey(id)
-    }
+    private val databaseManager = DatabaseManager(plugin.dataPath, plugin.dataPath / "storage")
 
-    object ProtectionGroups : Table() {
-        val id = varchar("id", 36).transform({ UUID.fromString(it) }, { it.toString() })
-        val owner = varchar("owner", 36).transform({ UUID.fromString(it) }, { it.toString() })
-        val members = text("members")
-        override val primaryKey = PrimaryKey(id)
-    }
+    suspend fun connect() {
+        databaseManager.databaseProvider.connect()
 
-    fun createConnection() {
-        transaction {
-            SchemaUtils.create(ProtectionGroups, ProtectionUsers)
+        newSuspendedTransaction {
+            SchemaUtils.create(
+                GroupMembersTable,
+                GroupsTable,
+                ProtectionGroupsTable,
+                ProtectionMembersTable,
+                ProtectionsTable,
+                ProtectionUsersTable
+            )
         }
+    }
+
+    fun disconnect() {
+        databaseManager.databaseProvider.disconnect()
     }
 }
