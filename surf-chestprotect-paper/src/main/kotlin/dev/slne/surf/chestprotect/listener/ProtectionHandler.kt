@@ -1,6 +1,6 @@
 package dev.slne.surf.chestprotect.listener
 
-import dev.slne.surf.chestprotect.utils.ProtectableBlocks
+import dev.slne.surf.chestprotect.utils.isProtecable
 import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -14,7 +14,7 @@ class ProtectionHandler : Listener {
         val player = event.player
         val block = event.block
 
-        if (!ProtectableBlocks.Companion.isProtectable(block.type)) return
+        if (!block.isProtecable()) return
 
         // add protection to db
         //check notification setting

@@ -8,13 +8,12 @@ import dev.slne.surf.chestprotect.dto.protection.result.ProtectionMemberRemoveRe
 import dev.slne.surf.chestprotect.dto.user.ProtectionUser
 import dev.slne.surf.surfapi.core.api.util.freeze
 import dev.slne.surf.surfapi.core.api.util.mutableObjectSetOf
-import it.unimi.dsi.fastutil.objects.ObjectSet
 import org.bukkit.Location
 
 class Protection(
     val location: Location,
-    members: ObjectSet<ProtectionUser>,
-    groups: ObjectSet<ProtectionGroup>
+    members: List<ProtectionUser>,
+    groups: List<ProtectionGroup>
 ) {
     private val _members = mutableObjectSetOf<ProtectionUser>(members)
     val members get() = _members.freeze()

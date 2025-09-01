@@ -11,4 +11,7 @@ class ProtectionMemberEntity(id: EntityID<Long>) : LongEntity(id) {
 
     val protection by ProtectionEntity referencedOn ProtectionMembersTable.protection
     val member by ProtectionUserEntity referencedOn ProtectionMembersTable.member
+
+    fun toDto() = ProtectioNMem
+
 }

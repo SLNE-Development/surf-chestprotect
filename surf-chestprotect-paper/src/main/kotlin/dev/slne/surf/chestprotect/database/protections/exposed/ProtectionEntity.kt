@@ -1,6 +1,10 @@
 package dev.slne.surf.chestprotect.database.protections.exposed
 
+import dev.slne.surf.chestprotect.database.protections.exposed.members.ProtectionMemberEntity
+import dev.slne.surf.chestprotect.database.protections.exposed.members.ProtectionMembersTable
+import dev.slne.surf.chestprotect.database.users.UsersService
 import dev.slne.surf.chestprotect.database.users.exposed.ProtectionUserEntity
+import dev.slne.surf.chestprotect.dto.protection.Protection
 import dev.slne.surf.surfapi.bukkit.api.extensions.server
 import org.bukkit.Location
 import org.jetbrains.exposed.dao.LongEntity
@@ -30,4 +34,11 @@ class ProtectionEntity(id: EntityID<Long>) : LongEntity(id) {
         }
 
     val owner by ProtectionUserEntity referencedOn ProtectionsTable.owner
+    val members by ProtectionMemberEntity referrersOn ProtectionMembersTable.protection
+
+    suspend fun toDto() = Protection(
+        location = location,
+        members = members.map { UsersService.getOrCreate(it.member.uuid) },
+        groups = 
+    )
 }
